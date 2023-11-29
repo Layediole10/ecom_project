@@ -27,4 +27,8 @@ def index(request):
 def details(request, id_prod):
     product = Product.objects.get(id=id_prod)
     return render(request, "myFirstShop/details.html", {"product": product})
+
+# verification des produits dans le panier
+def checkProduct(request):
+    return render(request, "myFirstShop/verify.html")
     

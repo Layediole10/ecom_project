@@ -90,6 +90,7 @@
                 panierString += document.getElementById("dfs"+x).innerHTML + " Qte: " + panier[x] + "</br>";
                 //index ++;
             }
+            panierString += "<a href='/check' class='btn btn-success'>Vérifier</a> ";
 
             $(function () {
                 $('[data-toggle="popover"]').popover()
