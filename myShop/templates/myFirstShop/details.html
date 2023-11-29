@@ -1,0 +1,70 @@
+{% extends "myFirstShop/main.html" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                <img src="{{product.image_prod}}" alt="" width="450px" height="450px">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="text-warning display-3">
+                {{ product.name_prod }}
+            </div>
+            <div class="text-info">
+                Prix : {{ product.price_prod }} FCFA
+            </div>
+            <div>
+                {{ product.description_prod }}
+            </div>
+            <a href="#"><button id="{{product.id}}" class="btn btn-success cmd">Commander</button></a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+       //console.log("Hello world!");
+    
+        if (localStorage.getItem("panier") == null){
+            var myPanier = {};
+        }else{
+            myPanier = JSON.parse(localStorage.getItem("panier"));
+        }
+        $(document).on("click", ".cmd", function(){
+            
+            let id_prod = this.id.toString();
+            
+            if(myPanier[id_prod] != undefined){
+                myPanier[id_prod] = myPanier[id_prod] + 1;
+            }else{
+                myPanier[id_prod] = 1;
+            }
+            
+            localStorage.setItem("panier", JSON.stringify(myPanier));
+            document.getElementById("id_panier").innerHTML = "Panier("+ Object.keys(myPanier).length+ ")";
+            
+            //console.log(myPanier)
+            //console.log(Object.keys(myPanier).length);
+        })
+
+        listProduct(myPanier)
+            
+        function listProduct(panier){
+            let panierString = "";
+            panierString += "<h6> Produits commandés </h6>";
+            //let index = 1;
+            for (let x in panier){
+                //panierString += index;
+                panierString += document.getElementById(x).innerHTML + " Qte: " + panier[x] + "</br>";
+                //index ++;
+            }
+
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+                document.getElementById("id_panier").setAttribute("data-content", panierString)
+            })
+        }
+
+    </script>
+{% endblock %} 

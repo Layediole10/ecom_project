@@ -1,0 +1,100 @@
+{% extends "myFirstShop/main.html" %}
+
+{% block content %}
+    <div class="row">
+        
+        <div class="col-md-12">
+            <form class="card card-sm">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col">
+                        <input type="search" name="search-elem" class="form-control form-control-borderless" placeholder="Entrez le nom du produit recherché">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success">Recherche</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        {% for product in myProduct %}
+        <div class="col-md-3">
+            <div class="card">
+                <img src="{{product.image_prod}}" alt="" class="card-img-top">
+                <div class="card-body">
+                    <div id="dfs{{ product.id }}" class="card-title">{{product.name_prod}}</div>
+                    <div class="card-text">{{product.price_prod}} FCFA</div>
+                    <a href="{{ product.id }}"><button class="btn btn-primary">Détails</button></a>
+                    <button id="{{ product.id }}" class="btn btn-success add">Ajouter</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-3 offset-md-4">
+            <ul class="pagination">
+                {% if myProduct.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?myPage={{ myProduct.previous_page_number }}"> Précédent </a>
+                </li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <a class="page-link" href="?myPage={{ myProduct.number }}">{{ myProduct.number }}</a>
+                </li>
+
+                {% if myProduct.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?myPage={{ myProduct.next_page_number }}"> Suivant </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+    //    console.log("Hello world!");
+    let myPanier = {};
+        if (localStorage.getItem("panier") == null){
+            myPanier ;
+        }else{
+            myPanier = JSON.parse(localStorage.getItem("panier"));
+        }
+        $(document).on("click", ".add", function(){
+    
+            let id_prod = this.id.toString();
+            
+            if(myPanier[id_prod] != undefined){
+                myPanier[id_prod] = myPanier[id_prod] + 1;
+            }else{
+                myPanier[id_prod] = 1;
+            }
+            
+            localStorage.setItem("panier", JSON.stringify(myPanier));
+            document.getElementById("id_panier").innerHTML = "Panier("+ Object.keys(myPanier).length+ ")";
+            //console.log(myPanier)
+            //console.log(Object.keys(myPanier).length);
+        })
+
+        listProduct(myPanier)
+            
+        function listProduct(panier){
+            let panierString = "";
+            panierString += "<h6> Produits commandés </h6>";
+            //let index = 1;
+            for (let x in panier){
+                //panierString += index;
+                panierString += document.getElementById("dfs"+x).innerHTML + " Qte: " + panier[x] + "</br>";
+                //index ++;
+            }
+
+            $(function () {
+                $('[data-toggle="popover"]').popover()
+                document.getElementById("id_panier").setAttribute("data-content", panierString)
+            })
+        }
+    </script>
+{% endblock %} 
