@@ -57,37 +57,40 @@
 {% block js %}
     <script type="text/javascript">
     //    console.log("Hello world!");
-    let myPanier = {};
+    
         if (localStorage.getItem("panier") == null){
-            myPanier ;
+            var myPanier = {};
         }else{
             myPanier = JSON.parse(localStorage.getItem("panier"));
         }
         $(document).on("click", ".add", function(){
     
-            let id_prod = this.id.toString();
-            
+            var id_prod = this.id.toString();
+            console.log(id_prod)
             if(myPanier[id_prod] != undefined){
-                myPanier[id_prod] = myPanier[id_prod] + 1;
+                quantite = myPanier[id_prod][0] + 1;
+                myPanier[id_prod][0] = quantite;
             }else{
-                myPanier[id_prod] = 1;
+                quantite = 1;
+                nom_prod = document.getElementById("dfs"+id_prod).innerHTML;
+                myPanier[id_prod] = [quantite, nom_prod]
             }
             
             localStorage.setItem("panier", JSON.stringify(myPanier));
             document.getElementById("id_panier").innerHTML = "Panier("+ Object.keys(myPanier).length+ ")";
-            //console.log(myPanier)
+            console.log(myPanier)
             //console.log(Object.keys(myPanier).length);
         })
 
         listProduct(myPanier)
             
         function listProduct(panier){
-            let panierString = "";
+            var panierString = "";
             panierString += "<h6> Produits commandés </h6>";
             //let index = 1;
-            for (let x in panier){
+            for (var x in panier){
                 //panierString += index;
-                panierString += document.getElementById("dfs"+x).innerHTML + " Qte: " + panier[x] + "</br>";
+                panierString += document.getElementById("dfs"+x).innerHTML + " Qte: " + panier[x][0] + "</br>";
                 //index ++;
             }
             panierString += "<a href='/check' class='btn btn-success'>Vérifier</a> ";

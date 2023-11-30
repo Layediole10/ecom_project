@@ -30,3 +30,20 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name_prod
+
+class Commande(models.Model):
+
+    items = models.CharField(max_length=200)
+    nom = models.CharField(max_length=100)
+    email = models.EmailField(max_length=150)
+    adresse = models.CharField(max_length=100)
+    ville = models.CharField(max_length=100)
+    pays = models.CharField(max_length=100)
+    zipcode = models.CharField(max_length=100)
+    date_commande = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-date_commande"]
+
+    def __str__(self):
+        return self.nom 

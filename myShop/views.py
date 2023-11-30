@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Category, Product
+from .models import Category, Product, Commande
 from django.core.paginator import Paginator
 
 
@@ -30,5 +30,17 @@ def details(request, id_prod):
 
 # verification des produits dans le panier
 def checkProduct(request):
+
+# Enregistrement des données clients dans la BD:
+    if request.method == "POST":
+        items = request.POST.get('items')
+        nom = request.POST.get('nom')
+        email = request.POST.get('email')
+        address = request.POST.get('address')   
+        ville = request.POST.get('ville')
+        pays = request.POST.get('pays') 
+        zipcode = request.POST.get('zipcode') 
+        maCommande = Commande(items=items, nom=nom, email=email, adresse=address, ville=ville, pays=pays, zipcode=zipcode) 
+        maCommande.save()  
     return render(request, "myFirstShop/verify.html")
     
