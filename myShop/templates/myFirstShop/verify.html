@@ -5,8 +5,15 @@
 <div class="row">
     <div class="col-md-12">
         <ol class="list-group list-group-numbered" id="list-prod">
-            
+           
         </ol>
+        <div class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Quantité & Prix total</div>
+          </div>
+          <span id="qt-cmd" class="badge bg-primary rounded-pill">qtes:</span>
+          <span id="price-cmd" class="badge bg-success rounded-pill">prix total = </span>
+        </div> 
     </div>
 </div>
 <h3 align="center">Vous pouvez valider votre commande ici </h3>
@@ -70,18 +77,26 @@
         }else{
             myPanier = JSON.parse(localStorage.getItem("panier"));
         }
+        var prix_total = 0;
+        var qt_total = 0;
         for(elem in myPanier){
             let nom = myPanier[elem][1];
             let qte = myPanier[elem][0];
+            let prix = myPanier[elem][2];
             let itemProd = ` <li class="list-group-item d-flex justify-content-between align-items-start">
               <div class="ms-2 me-auto">
                 <div class="fw-bold">${nom}</div>
               </div>
-              <span class="badge bg-success rounded-pill"> qte : ${qte} </span>
+              <span class="badge bg-primary rounded-pill"> qte : ${qte} </span>
+              <span class="badge bg-success rounded-pill"> prix : ${prix} FCFA</span>
             </li>`;
+            prix_total += prix;
+            qt_total += qte;
             $("#list-prod").append(itemProd);
+            
         }
-
+        $("#price-cmd").append(prix_total+" FCFA");
+        $("#qt-cmd").append(qt_total);
         $("#items").val(JSON.stringify(myPanier));
     </script>
     

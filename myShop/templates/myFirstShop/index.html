@@ -23,7 +23,7 @@
                 <img src="{{product.image_prod}}" alt="" class="card-img-top">
                 <div class="card-body">
                     <div id="dfs{{ product.id }}" class="card-title">{{product.name_prod}}</div>
-                    <div class="card-text">{{product.price_prod}} FCFA</div>
+                    <div id="price{{ product.id }}" class="card-text">{{product.price_prod}} FCFA</div>
                     <a href="{{ product.id }}"><button class="btn btn-primary">Détails</button></a>
                     <button id="{{ product.id }}" class="btn btn-success add">Ajouter</button>
                 </div>
@@ -70,10 +70,12 @@
             if(myPanier[id_prod] != undefined){
                 quantite = myPanier[id_prod][0] + 1;
                 myPanier[id_prod][0] = quantite;
+                myPanier[id_prod][2] += parseFloat(document.getElementById("price"+id_prod).innerHTML);
             }else{
                 quantite = 1;
+                prix_cmd = parseFloat(document.getElementById("price"+id_prod).innerHTML);
                 nom_prod = document.getElementById("dfs"+id_prod).innerHTML;
-                myPanier[id_prod] = [quantite, nom_prod]
+                myPanier[id_prod] = [quantite, nom_prod, prix_cmd]
             }
             
             localStorage.setItem("panier", JSON.stringify(myPanier));
