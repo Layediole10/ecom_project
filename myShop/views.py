@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from .models import Category, Product, Commande
 from django.core.paginator import Paginator
 
@@ -34,13 +35,23 @@ def checkProduct(request):
 # Enregistrement des données clients dans la BD:
     if request.method == "POST":
         items = request.POST.get('items')
+        prix = request.POST.get('prix')
         nom = request.POST.get('nom')
         email = request.POST.get('email')
         address = request.POST.get('address')   
         ville = request.POST.get('ville')
         pays = request.POST.get('pays') 
         zipcode = request.POST.get('zipcode') 
-        maCommande = Commande(items=items, nom=nom, email=email, adresse=address, ville=ville, pays=pays, zipcode=zipcode) 
-        maCommande.save()  
-    return render(request, "myFirstShop/verify.html")
+        maCommande = Commande(items=items, prix=prix, nom=nom, email=email, adresse=address, ville=ville, pays=pays, zipcode=zipcode) 
+        maCommande.save() 
+        return HttpResponseRedirect("/success")
+    else: 
+        return render(request, "myFirstShop/verify.html")
+
+
+def success(request):
+    customer = Commande.objects.all()[:1]
+    for cust in customer:
+        my_customer = cust.nom
+    return render(request, "myFirstShop/success.html", { "my_customer": my_customer })
     

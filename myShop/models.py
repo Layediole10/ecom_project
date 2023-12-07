@@ -34,6 +34,7 @@ class Product(models.Model):
 class Commande(models.Model):
 
     items = models.CharField(max_length=200)
+    prix = models.FloatField(null=True)
     nom = models.CharField(max_length=100)
     email = models.EmailField(max_length=150)
     adresse = models.CharField(max_length=100)
