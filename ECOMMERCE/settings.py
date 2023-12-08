@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import django_heroku
-import dj_database_url
+#import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-=*5#fi)rdn73603#+=s5^_!#3irai^c1r6c3jzqqepbdh=&#&f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["https://shopdiolefamily-5e33c574b2a0.herokuapp.com/", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -77,19 +77,19 @@ TEMPLATES = [
 WSGI_APPLICATION = "ECOMMERCE.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-#DATABASES = {
-#    "default": {
-#        "ENGINE": "django.db.backends.sqlite3",
-#        "NAME": BASE_DIR / "db.sqlite3",
-#    }
-#}
+#Database
+#https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.config()
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 }
+
+#DATABASES = {
+#    "default": dj_database_url.config()
+#}
 
 
 # Password validation
@@ -134,4 +134,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
